@@ -1,0 +1,9 @@
+# It didn’t start with you
+
+Author: Mark wolynn
+Date Finished: March 28, 2024
+Finished: Yes
+Image: It%20didn%E2%80%99t%20start%20with%20you/Screenshot_20240202-135108_Libby.jpg
+Rating: ⭐⭐
+Notes: Keeping silent about the past does little to help future generations. Trauma in families can be experienced down to the 3rd or 4th generation, much like reactions to a scent in future generations of rats. This occurs perhaps through gene activation/deactivation. We find this trauma by discovering a core sentence about our trauma and matching it to the first ancestor to experience these things. Are you sure this fear originates with you? This book is a case against keeping quiet about your history. We think we are more likely to propagate bad behavior by talking about it, but we also run the risk of not naming it and our kids unknowingly following in our footsteps. By avoiding the topics and our past, we are more likely to find our children reliving our pains, both they and us in oblivion. Ignoring the pain deepens it. This book is also another book that could have been much shorter than it was. Interesting information and helpful tools for people, but a bit of a drag for someone trying to get to the pit and core of the ideas as clearly and quickly as possible. We use our pain, only by naming it and leaving it in our own past, not hiding it in the lives of future generations. We choose partners that will best help us finish Unfinished business with our parents, selves, family history, etc. Lay down nee pathways in your brain, leaving pains of the past with those in the past. See with compassion all around you in the present and past.
+Yearly Review: No
