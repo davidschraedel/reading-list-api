@@ -1376,7 +1376,6 @@
     <div class="brand-wrap">
       <h1 class="brand-title">
         Reading List Gallery
-        <span class="pill-badge" id="countBadge">{{ stats.total }} Books</span>
       </h1>
     </div>
 
@@ -1653,7 +1652,6 @@
     const scrollLeftBtn = document.getElementById('scrollLeft');
     const scrollRightBtn = document.getElementById('scrollRight');
     const searchInput = document.getElementById('searchInput');
-    const countBadge = document.getElementById('countBadge');
     const emptyShelf = document.getElementById('emptyShelf');
     const cards = Array.from(document.querySelectorAll('.book-card'));
     const filterChips = Array.from(document.querySelectorAll('.filter-chip'));
@@ -1775,7 +1773,6 @@
       currentFilteredBooks = filtered;
       const count = filtered.length;
 
-      countBadge.textContent = `${count} Book${count === 1 ? '' : 's'}`;
       emptyShelf.style.display = count === 0 ? 'block' : 'none';
       coversRow.style.display = count === 0 ? 'none' : 'flex';
 
