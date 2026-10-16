@@ -1,6 +1,6 @@
 import sqlite3
 from pathlib import Path
-from flask import Flask, abort, render_template, request, send_from_directory, url_for
+from flask import Flask, abort, redirect, render_template, request, send_from_directory, url_for
 
 app = Flask(__name__)
 
@@ -73,11 +73,53 @@ def list_covers():
         for r in rows
     ]
 
+@app.get("/gallery")
+def reading_list_gallery():
+    """Render interactive Reading List Gallery with statistics, charts, and cover showcase."""
+    rows = query("SELECT * FROM books ORDER BY (date_finished IS NULL), date_finished DESC, id DESC")
+    books = [with_cover_url(b) for b in rows]
+
+    total_books = len(books)
+    finished_count = sum(1 for b in books if b["finished"])
+    yearly_review_count = sum(1 for b in books if b["yearly_review"])
+
+    ratings = [b["rating"] for b in books if b["rating"] is not None]
+    avg_rating = round(sum(ratings) / len(ratings), 1) if ratings else 0.0
+
+    # Reading stats grouped by year
+    year_counts = {}
+    for b in books:
+        if b.get("date_finished"):
+            y = b["date_finished"][:4]
+            year_counts[y] = year_counts.get(y, 0) + 1
+    yearly_stats = [{"year": y, "count": year_counts[y]} for y in sorted(year_counts.keys())]
+
+    # Rating distribution breakdown
+    rating_counts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
+    for b in books:
+        r = b.get("rating")
+        if r is not None:
+            r_int = int(round(r))
+            if r_int in rating_counts:
+                rating_counts[r_int] += 1
+
+    stats = {
+        "total": total_books,
+        "finished": finished_count,
+        "unread": total_books - finished_count,
+        "avg_rating": avg_rating,
+        "yearly_reviews": yearly_review_count,
+        "yearly": yearly_stats,
+        "ratings": rating_counts,
+    }
+
+    return render_template("gallery.html", books=books, stats=stats)
+
 @app.get("/api/covers/gallery")
-def covers_gallery():
-    """Render interactive horizontal scrolling cover gallery in HTML."""
-    books = list_covers()
-    return render_template("gallery.html", books=books)
+def covers_gallery_redirect():
+    """Redirect legacy covers gallery route to /gallery."""
+    return redirect(url_for("reading_list_gallery"))
+
 
 @app.get("/api/covers/<path:filename>")
 def cover(filename):

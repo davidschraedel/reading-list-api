@@ -23,8 +23,8 @@ The API will be running at `http://127.0.0.1:5000`.
 | GET | `/api/books` | List books, newest finished first |
 | GET | `/api/books/<id>` | One book, including personal notes |
 | GET | `/api/covers` | List all books that have covers (JSON) |
-| GET | `/api/covers/gallery` | Visual horizontal scroll gallery (Browser) |
 | GET | `/api/covers/<filename>` | Direct cover image file |
+| GET | `/gallery` | Interactive Reading List Gallery with statistics & book details (Browser) |
 
 ### `GET /api/books` query parameters
 
@@ -99,9 +99,14 @@ curl "http://127.0.0.1:5000/api/covers"
 ]
 ```
 
-### 4. Interactive Browser Gallery (`GET /api/covers/gallery`)
+### 4. Interactive Browser Gallery (`GET /gallery`)
 
-Visit [http://127.0.0.1:5000/api/covers/gallery](http://127.0.0.1:5000/api/covers/gallery) in your browser to view all book covers in a responsive, horizontal scrolling shelf with live search filtering.
+Visit [http://127.0.0.1:5000/gallery](http://127.0.0.1:5000/gallery) in your browser to view the **Reading List Gallery**:
+- Displays all 107 library books (with custom stylized placeholders for books without covers).
+- Reading statistics and interactive charts (reading volume by year, rating breakdown).
+- Click any book cover to open a detail modal overlay with notes, ratings, and status.
+- Natural touchpad horizontal swipe for the shelf, smooth vertical scrolling for the page.
+- *(Note: `/api/covers/gallery` automatically redirects here).*
 
 ---
 
