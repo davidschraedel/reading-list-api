@@ -14,7 +14,7 @@
   <style>
     :root {
       /* Pastoral Sanctuary - Color Tokens */
-      --surface: #fbf9f6;
+      --surface: #eff3f7;
       --surface-dim: #dbdad7;
       --surface-bright: #fbf9f6;
       --surface-container-lowest: #ffffff;
@@ -299,10 +299,10 @@
       background: var(--surface-container-lowest);
 
       border-radius: var(--rounded-lg);
-      padding: 1.4rem 1.6rem;
+      padding: 0.5rem 1.3rem;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      /* gap: 0.1rem; */
       box-shadow: var(--shadow-sunlight-sm);
     }
 
@@ -316,8 +316,8 @@
 
     .stat-val-group {
       display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
+      align-items: flex-end;
+      gap: 0.55rem;
     }
 
     .stat-value {
@@ -331,9 +331,13 @@
     .stat-badge {
       font-size: 0.75rem;
       font-weight: 600;
-      padding: 0.2rem 0.55rem;
+      padding: 0.22rem 0.55rem;
+      margin-bottom: 0.25rem;
       border-radius: var(--rounded-default);
       font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
     }
 
     .badge-emerald {
@@ -854,11 +858,12 @@
       transform: translateY(-50%);
       width: 48px;
       height: 48px;
-      border-radius: 50%;
+      border-radius: 100%;
       background: rgba(251, 249, 246, 0.94);
       border: 1px solid var(--outline-variant);
       color: var(--on-surface);
       font-size: 1.4rem;
+      padding-bottom: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -974,7 +979,8 @@
       display: flex;
       background: var(--surface-container);
       border-radius: var(--rounded-default);
-      padding: 2px;
+      padding: 3px;
+      gap: 3px;
     }
 
     .toggle-btn {
@@ -984,21 +990,29 @@
       font-size: 0.75rem;
       font-weight: 600;
       padding: 0.35rem 0.75rem;
-      border-radius: 0.3rem;
+      border-radius: 0.35rem;
       cursor: pointer;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: background 0.15s ease, color 0.15s ease;
+      transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
       user-select: none;
     }
 
     .toggle-btn:hover {
       color: var(--on-surface);
+      background: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 1px 3px rgba(42, 24, 0, 0.05);
     }
 
     .toggle-btn.active {
       background: #ffffff;
       color: var(--on-surface);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 4px rgba(42, 24, 0, 0.1);
+    }
+
+    .toggle-btn.active:hover {
+      background: #ffffff;
+      color: var(--on-surface);
+      box-shadow: 0 2px 6px rgba(42, 24, 0, 0.14);
     }
 
     .copy-json-btn {
@@ -1015,22 +1029,30 @@
       cursor: pointer;
       user-select: none;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
     }
 
     .copy-json-btn:hover {
       background: var(--primary-container);
-      box-shadow: 0 4px 14px rgba(42, 71, 127, 0.22);
+      border-color: var(--primary-container);
+      box-shadow: 0 4px 14px rgba(42, 71, 127, 0.26);
+      transform: translateY(-1px);
     }
 
     .copy-json-btn:active {
-      transform: scale(0.98);
+      transform: translateY(0) scale(0.98);
     }
 
     .copy-json-btn.copied {
       background: var(--botanical-text);
       border-color: var(--botanical-text);
       box-shadow: 0 4px 14px rgba(33, 84, 51, 0.22);
+    }
+
+    .copy-json-btn.copied:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 4px 16px rgba(33, 84, 51, 0.28);
+      transform: translateY(-1px);
     }
 
     .json-body {
@@ -1620,8 +1642,7 @@
 
   <!-- Footer -->
   <footer>
-    <span>Reading List Gallery — Built with Flask & SQLite</span>
-    <span>Use trackpad swipe or arrow buttons to scroll shelf</span>
+    <span>2026 - David Schraedel</span>
   </footer>
 
   <!-- Safe Server Data Injection for Modal & Client Filter -->
