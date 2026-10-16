@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reading List Gallery</title>
+  <meta name="description" content="Visual gallery, statistics, and book showcase for personal reading list.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      /* Pastoral Sanctuary - Color Tokens */
+      --surface: #eff3f7;
+      --surface-dim: #dbdad7;
+      --surface-bright: #fbf9f6;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #f5f3f0;
+      --surface-container: #efeeeb;
+      --surface-container-high: #eae8e5;
+      --surface-container-highest: #e4e2df;
+
+      --on-surface: #1b1c1a;
+      --on-surface-variant: #444750;
+      --inverse-surface: #30312f;
+      --inverse-on-surface: #f2f0ed;
+
+      --outline: #747781;
+      --outline-variant: #c4c6d1;
+      --surface-tint: #415d97;
+
+      --primary: #2a477f;
+      --on-primary: #ffffff;
+      --primary-container: #435f99;
+      --on-primary-container: #cedbff;
+      --inverse-primary: #aec6ff;
+
+      --secondary: #765934;
+      --on-secondary: #ffffff;
+      --secondary-container: #fed6a7;
+      --on-secondary-container: #795b36;
+
+      --tertiary: #40485f;
+      --on-tertiary: #ffffff;
+      --tertiary-container: #586078;
+      --on-tertiary-container: #d3dbf7;
+
+      --error: #ba1a1a;
+      --on-error: #ffffff;
+      --error-container: #ffdad6;
+      --on-error-container: #93000a;
+
+      --primary-fixed: #d8e2ff;
+      --primary-fixed-dim: #aec6ff;
+      --on-primary-fixed: #001a43;
+      --on-primary-fixed-variant: #28457e;
+
+      --secondary-fixed: #ffddb6;
+      --secondary-fixed-dim: #e6c093;
+      --on-secondary-fixed: #2a1800;
+      --on-secondary-fixed-variant: #5c421f;
+
+      --tertiary-fixed: #dae2fe;
+      --tertiary-fixed-dim: #bec6e1;
+      --on-tertiary-fixed: #131b2f;
+      --on-tertiary-fixed-variant: #3e465d;
+
+      --background: #fbf9f6;
+      --on-background: #1b1c1a;
+      --surface-variant: #e4e2df;
+
+      /* Botanical / Sage Accent Tokens */
+      --botanical-surface: #e5eee6;
+      --botanical-text: #215433;
+      --botanical-border: rgba(33, 84, 51, 0.22);
+
+      /* Radius Tokens */
+      --rounded-sm: 0.25rem;
+      --rounded-default: 0.5rem;
+      --rounded-md: 0.75rem;
+      --rounded-lg: 1rem;
+      --rounded-xl: 1.5rem;
+      --rounded-full: 9999px;
+
+      /* Spacing Tokens */
+      --gutter: 1.5rem;
+      --gutter-desktop: 2.5rem;
+      --margin: 1.25rem;
+      --margin-tablet: 2.5rem;
+      --margin-desktop: 4rem;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.75rem;
+      --space-xl: 3rem;
+
+      /* Sunlight Shadows */
+      --shadow-sunlight-sm: 0 4px 16px rgba(118, 89, 52, 0.05), 0 1px 4px rgba(42, 71, 127, 0.03);
+      --shadow-sunlight-md: 0 8px 24px rgba(118, 89, 52, 0.07), 0 2px 8px rgba(42, 71, 127, 0.04);
+      --shadow-sunlight-lg: 0 16px 36px rgba(118, 89, 52, 0.1), 0 4px 12px rgba(42, 71, 127, 0.05);
+      --shadow-modal: 0 24px 64px rgba(42, 24, 0, 0.18), 0 8px 24px rgba(67, 95, 153, 0.08);
+
+      /* Ambient Borders */
+      --border-tonal: 1px solid rgba(196, 198, 209, 0.45);
+      --border-tonal-light: 1px solid rgba(196, 198, 209, 0.25);
+      --border-sunken: 1px solid rgba(116, 119, 129, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--surface);
+      background-image:
+        radial-gradient(at 12% 10%, rgba(67, 95, 153, 0.03) 0px, transparent 55%),
+        radial-gradient(at 88% 15%, rgba(118, 89, 52, 0.04) 0px, transparent 50%),
+        radial-gradient(at 50% 90%, rgba(64, 72, 95, 0.02) 0px, transparent 65%);
+      background-attachment: fixed;
+      color: var(--on-surface);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Navbar / Header */
+    header {
+      padding: 1.5rem 3rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      border-bottom: 1px solid rgba(196, 198, 209, 0.4);
+      backdrop-filter: blur(16px);
+      background: rgba(251, 249, 246, 0.88);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-title {
+      font-family: 'Literata', Georgia, serif;
+      font-size: 1.65rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--on-surface);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.85rem;
+      border-radius: var(--rounded-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--primary-fixed);
+      /* border: 1px solid var(--primary-fixed-dim); */
+      color: var(--on-primary-fixed-variant);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .search-input-wrap {
+      position: relative;
+    }
+
+    .search-input-wrap input {
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-default);
+      padding: 0.55rem 1.2rem 0.55rem 2.3rem;
+      color: var(--on-surface);
+      font-size: 0.875rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      outline: none;
+      width: 230px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, width 0.25s ease, background 0.2s ease;
+    }
+
+    .search-input-wrap input::placeholder {
+      color: var(--outline);
+    }
+
+    .search-input-wrap input:focus {
+      background: var(--surface-container-low);
+      border-color: var(--primary-container);
+      box-shadow: 0 0 0 3px rgba(67, 95, 153, 0.18);
+      width: 270px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--outline);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    .api-link-btn {
+      background: var(--surface-container-low);
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface-variant);
+      padding: 0.55rem 0.95rem;
+      border-radius: var(--rounded-default);
+      font-size: 0.825rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .api-link-btn:hover {
+      background: var(--surface-container-high);
+      color: var(--primary);
+      border-color: var(--primary-fixed-dim);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      padding: 2.5rem 0;
+    }
+
+    .content-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 3rem;
+      width: 100%;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-title {
+      font-family: 'Literata', Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--on-surface);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .section-sub {
+      color: var(--on-surface-variant);
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Stats Grid (Static Display — No Click/Hover) */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--surface-container-lowest);
+
+      border-radius: var(--rounded-lg);
+      padding: 0.5rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      /* gap: 0.1rem; */
+      box-shadow: var(--shadow-sunlight-sm);
+    }
+
+    .stat-label {
+      font-size: 0.775rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    .stat-val-group {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.55rem;
+    }
+
+    .stat-value {
+      font-family: 'Literata', Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      line-height: 1;
+    }
+
+    .stat-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.22rem 0.55rem;
+      margin-bottom: 0.25rem;
+      border-radius: var(--rounded-default);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .badge-emerald {
+      background: var(--botanical-surface);
+      color: var(--botanical-text);
+    }
+
+    .badge-gold {
+      background: var(--secondary-fixed);
+      color: var(--on-secondary-fixed-variant);
+    }
+
+    .badge-indigo {
+      background: var(--primary-fixed);
+      color: var(--on-primary-fixed-variant);
+    }
+
+    /* Charts Row */
+    .charts-row {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .chart-panel {
+      background: var(--surface-container-lowest);
+
+      border-radius: var(--rounded-lg);
+      padding: 1.6rem 1.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      box-shadow: var(--shadow-sunlight-sm);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chart-title {
+      font-family: 'Literata', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--on-surface);
+    }
+
+    .chart-meta {
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+
+    /* Yearly Bars (Clickable) */
+    .year-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.25rem;
+      height: 140px;
+      padding-top: 1.5rem;
+    }
+
+    .year-bar-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      height: 100%;
+      justify-content: flex-end;
+      cursor: pointer;
+      user-select: none;
+      padding: 0.25rem;
+      border-radius: var(--rounded-default);
+      transition: background 0.2s ease;
+    }
+
+    .year-bar-item:hover {
+      background: var(--surface-container);
+    }
+
+    .year-bar-fill-wrap {
+      width: 100%;
+      max-width: 54px;
+      height: 100%;
+      background: var(--surface-container-high);
+      border-radius: 6px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .year-bar-fill {
+      width: 100%;
+      background: linear-gradient(180deg, var(--primary-container) 0%, var(--primary) 100%);
+      border-radius: 6px 6px 0 0;
+      transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+      position: relative;
+    }
+
+    .year-bar-item:hover .year-bar-fill {
+      filter: brightness(1.1);
+      box-shadow: 0 0 12px rgba(67, 95, 153, 0.25);
+    }
+
+    .year-bar-item.active {
+      background: var(--primary-fixed);
+      outline: 2px solid var(--primary);
+      border-radius: var(--rounded-default);
+    }
+
+    .year-bar-item.active .year-bar-fill {
+      filter: brightness(1.15);
+    }
+
+    .year-bar-count {
+      position: absolute;
+      top: -1.4rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.775rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .year-bar-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+    }
+
+    /* Rating Bars (Clickable) */
+    .rating-breakdown-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.825rem;
+      cursor: pointer;
+      padding: 0.35rem 0.6rem;
+      border-radius: var(--rounded-default);
+      transition: background 0.2s ease;
+      user-select: none;
+    }
+
+    .rating-row:hover {
+      background: var(--surface-container);
+    }
+
+    .rating-row.active {
+      background: var(--secondary-fixed);
+      outline: 1px solid var(--secondary);
+    }
+
+    .rating-label {
+      width: 40px;
+      color: var(--secondary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .rating-bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--surface-container-high);
+      border-radius: var(--rounded-full);
+      overflow: hidden;
+    }
+
+    .rating-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #8C6D46 0%, #765934 100%);
+      border-radius: var(--rounded-full);
+      transition: width 0.6s ease;
+    }
+
+    .rating-count {
+      width: 28px;
+      text-align: right;
+      color: var(--on-surface-variant);
+      font-weight: 600;
+    }
+
+    /* Filter Chips (Clickable) */
+    .filters-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .filter-chip {
+      background: var(--surface-container-low);
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface-variant);
+      padding: 0.45rem 1rem;
+      border-radius: var(--rounded-default);
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      user-select: none;
+    }
+
+    .filter-chip:hover {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+      border-color: var(--outline);
+    }
+
+    .filter-chip.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--on-primary);
+      box-shadow: 0 4px 14px rgba(42, 71, 127, 0.22);
+    }
+
+    /* Active Filter Banner (Inside Shelf Header) */
+    .active-filter-banner {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.35rem 0.85rem;
+      background: var(--primary-fixed);
+      border: 1px solid var(--primary-fixed-dim);
+      border-radius: var(--rounded-full);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .filter-status-text {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.825rem;
+      color: var(--on-primary-fixed);
+    }
+
+    .filter-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 6px rgba(42, 71, 127, 0.4);
+    }
+
+    .filter-count-pill {
+      background: rgba(42, 71, 127, 0.12);
+      padding: 0.15rem 0.55rem;
+      border-radius: var(--rounded-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--on-primary-fixed);
+    }
+
+    .clear-filter-btn {
+      background: #ffffff;
+      border: 1px solid var(--outline-variant);
+      color: var(--error);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--rounded-full);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .clear-filter-btn:hover {
+      background: var(--error-container);
+      border-color: var(--error);
+      color: var(--on-error-container);
+    }
+
+    /* Horizontal Covers Shelf Section */
+    .shelf-section {
+      width: 100%;
+      position: relative;
+    }
+
+    .shelf-header-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 3rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      min-height: 54px;
+    }
+
+    .scroll-row-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .covers-row {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      padding: 1.5rem 3rem 2.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(118, 89, 52, 0.25) transparent;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .covers-row::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .covers-row::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .covers-row::-webkit-scrollbar-thumb {
+      background: rgba(118, 89, 52, 0.25);
+      border-radius: var(--rounded-full);
+    }
+
+    .covers-row::-webkit-scrollbar-thumb:hover {
+      background: var(--secondary);
+    }
+
+    /* Book Cards (Clickable) */
+    .book-card {
+      flex: 0 0 200px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-container-lowest);
+      border: var(--border-tonal);
+      border-radius: var(--rounded-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sunlight-sm);
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+    }
+
+    .book-card:hover {
+      border-color: rgba(67, 95, 153, 0.35);
+      box-shadow: var(--shadow-sunlight-lg);
+    }
+
+    .cover-wrapper {
+      position: relative;
+      width: 100%;
+      height: 290px;
+      overflow: hidden;
+      background: var(--surface-container-high);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cover-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.2s ease;
+    }
+
+    .book-card:hover .cover-img {
+      filter: contrast(1.02);
+    }
+
+    /* Placeholder for books without cover (Vintage Bookcloth & Vellum) */
+    .cover-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem 1.25rem;
+      background: linear-gradient(145deg, #2c362d 0%, #3e4c3f 50%, #202721 100%);
+      box-shadow: inset 8px 0 12px rgba(255, 255, 255, 0.06), inset -3px 0 6px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+      border-left: 3px solid #e6c093;
+    }
+
+    .cover-placeholder::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(230, 192, 147, 0.3);
+    }
+
+    .placeholder-badge {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #ffddb6;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .placeholder-center {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .placeholder-icon {
+      font-size: 2rem;
+      line-height: 1;
+      opacity: 0.85;
+    }
+
+    .placeholder-title {
+      font-family: 'Literata', Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fbf9f6;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .placeholder-author {
+      font-size: 0.75rem;
+      color: #dbdad7;
+      font-weight: 500;
+    }
+
+    .rating-pill {
+      position: absolute;
+      top: 0.65rem;
+      right: 0.65rem;
+      background: rgba(251, 249, 246, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(118, 89, 52, 0.25);
+      border-radius: var(--rounded-full);
+      padding: 0.2rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      z-index: 2;
+    }
+
+    .yearly-flag {
+      position: absolute;
+      top: 0.65rem;
+      left: 0.65rem;
+      background: var(--primary);
+      border-radius: var(--rounded-full);
+      padding: 0.2rem 0.55rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+    }
+
+    .card-info {
+      padding: 0.9rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      background: var(--surface-container-lowest);
+    }
+
+    .book-title {
+      font-family: 'Literata', Georgia, serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .book-author {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Arrow buttons (Clickable) */
+    .arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 100%;
+      background: rgba(251, 249, 246, 0.94);
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface);
+      font-size: 1.4rem;
+      padding-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 30;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-sunlight-md);
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    }
+
+    .arrow-btn:hover {
+      background: var(--surface-container-highest);
+      color: var(--primary);
+      border-color: var(--primary-fixed-dim);
+      box-shadow: var(--shadow-sunlight-lg);
+    }
+
+    .arrow-left {
+      left: 1rem;
+    }
+
+    .arrow-right {
+      right: 1rem;
+    }
+
+    .empty-shelf {
+      display: none;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--outline);
+      font-family: 'Literata', Georgia, serif;
+      font-size: 1.1rem;
+    }
+
+    /* JSON Export Section */
+    .json-export-section {
+      margin-top: 1rem;
+    }
+
+    .json-panel {
+      background: var(--surface-container-lowest);
+      border: var(--border-tonal);
+      border-radius: var(--rounded-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sunlight-md);
+    }
+
+    .json-header {
+      padding: 1.25rem 1.75rem;
+      background: var(--surface-container-low);
+      border-bottom: var(--border-tonal);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .json-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .json-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .json-icon {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .json-title {
+      font-family: 'Literata', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--on-surface);
+    }
+
+    .json-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--rounded-default);
+      background: var(--primary-fixed);
+      color: var(--on-primary-fixed-variant);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .json-size-badge {
+      font-size: 0.75rem;
+      color: var(--outline);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .json-subtitle {
+      font-size: 0.85rem;
+      color: var(--on-surface-variant);
+    }
+
+    .json-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .json-mode-toggle {
+      display: flex;
+      background: var(--surface-container);
+      border-radius: var(--rounded-default);
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .toggle-btn {
+      background: transparent;
+      border: none;
+      color: var(--on-surface-variant);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.35rem;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
+      user-select: none;
+    }
+
+    .toggle-btn:hover {
+      color: var(--on-surface);
+      background: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 1px 3px rgba(42, 24, 0, 0.05);
+    }
+
+    .toggle-btn.active {
+      background: #ffffff;
+      color: var(--on-surface);
+      box-shadow: 0 1px 4px rgba(42, 24, 0, 0.1);
+    }
+
+    .toggle-btn.active:hover {
+      background: #ffffff;
+      color: var(--on-surface);
+      box-shadow: 0 2px 6px rgba(42, 24, 0, 0.14);
+    }
+
+    .copy-json-btn {
+      background: var(--primary);
+      border: 1px solid var(--primary);
+      color: #ffffff;
+      padding: 0.5rem 1.15rem;
+      border-radius: var(--rounded-default);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+      user-select: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .copy-json-btn:hover {
+      background: var(--primary-container);
+      border-color: var(--primary-container);
+      box-shadow: 0 4px 14px rgba(42, 71, 127, 0.26);
+      transform: translateY(-1px);
+    }
+
+    .copy-json-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .copy-json-btn.copied {
+      background: var(--botanical-text);
+      border-color: var(--botanical-text);
+      box-shadow: 0 4px 14px rgba(33, 84, 51, 0.22);
+    }
+
+    .copy-json-btn.copied:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 4px 16px rgba(33, 84, 51, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .json-body {
+      padding: 1.25rem 1.75rem;
+      position: relative;
+    }
+
+    .json-pre {
+      background: var(--inverse-surface);
+      border: 1px solid rgba(116, 119, 129, 0.25);
+      border-radius: var(--rounded-md);
+      padding: 1.2rem;
+      max-height: 280px;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--inverse-on-surface);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(216, 226, 255, 0.3) transparent;
+    }
+
+    .json-pre::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .json-pre::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: var(--rounded-full);
+    }
+
+    /* Modal / Overlay */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(27, 28, 26, 0.55);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--surface-container-lowest);
+      border: var(--border-tonal);
+      border-radius: var(--rounded-xl);
+      max-width: 720px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-modal);
+      position: relative;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      transform: scale(0.96);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface-variant);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+
+    .modal-cover-side {
+      background: var(--surface-container-low);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: var(--border-tonal);
+    }
+
+    .modal-cover-img {
+      width: 100%;
+      border-radius: var(--rounded-md);
+      box-shadow: 0 8px 24px rgba(118, 89, 52, 0.15);
+      max-height: 320px;
+      object-fit: cover;
+    }
+
+    .modal-cover-placeholder {
+      width: 100%;
+      height: 290px;
+      border-radius: var(--rounded-md);
+    }
+
+    .modal-info-side {
+      padding: 2rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .modal-heading {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .modal-title {
+      font-family: 'Literata', Georgia, serif;
+      font-size: 1.55rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--on-surface);
+    }
+
+    .modal-author {
+      font-size: 0.95rem;
+      color: var(--secondary);
+      font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .modal-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .badge-chip {
+      font-size: 0.775rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--rounded-default);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .modal-notes-box {
+      background: var(--surface-container-low);
+      border: var(--border-tonal);
+      border-radius: var(--rounded-md);
+      padding: 1.1rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .modal-notes-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--secondary);
+      font-weight: 700;
+    }
+
+    .modal-notes-text {
+      font-size: 0.9rem;
+      color: var(--on-surface);
+      line-height: 1.75;
+      max-height: 180px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: auto;
+      padding-top: 0.5rem;
+    }
+
+    .modal-btn {
+      padding: 0.55rem 1rem;
+      border-radius: var(--rounded-default);
+      font-size: 0.825rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      border: 1px solid var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-container);
+      box-shadow: 0 4px 14px rgba(42, 71, 127, 0.22);
+    }
+
+    .btn-secondary {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+      border: 1px solid var(--outline-variant);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-container-highest);
+    }
+
+    /* Footer */
+    footer {
+      padding: 2rem 3rem;
+      background: var(--surface-container-low);
+      border-top: var(--border-tonal);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      color: var(--outline);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--on-surface-variant);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--primary);
+    }
+
+    @media (max-width: 900px) {
+      .charts-row {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-card {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-cover-side {
+        border-right: none;
+        border-bottom: var(--border-tonal);
+        padding: 1.5rem;
+      }
+
+      .modal-cover-img {
+        max-height: 200px;
+        width: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 1.25rem 1.5rem;
+      }
+
+      .content-container,
+      .shelf-header-wrap {
+        padding: 0 1.5rem;
+      }
+
+      .covers-row {
+        padding: 1rem 1.5rem 2rem;
+        gap: 1.2rem;
+      }
+
+      .book-card {
+        flex: 0 0 160px;
+      }
+
+      .cover-wrapper {
+        height: 230px;
+      }
+
+      .arrow-btn {
+        display: none;
+      }
+
+      .json-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="brand-wrap">
+      <h1 class="brand-title">
+        Reading List Gallery
+      </h1>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Filter title or author..." autocomplete="off">
+      </div>
+      <a href="/api/books" class="api-link-btn" target="_blank" title="API Books Endpoint">
+        Books API ↗
+      </a>
+      <a href="/api/covers" class="api-link-btn" target="_blank" title="API Covers Endpoint">
+        Covers API ↗
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Analytics & Reading Statistics Section -->
+    <section class="content-container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">📊 Reading Insights</h2>
+          <p class="section-sub">Progress, reading volume over time, and rating breakdown</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid (Static info - no hover effect) -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Total Books</span>
+          <div class="stat-val-group">
+            <span class="stat-value">{{ stats.total }}</span>
+            <span class="stat-badge badge-indigo">Library</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">Books Finished</span>
+          <div class="stat-val-group">
+            <span class="stat-value">{{ stats.finished }}</span>
+            <span class="stat-badge badge-emerald">{{ "%.0f"|format(stats.finished / stats.total * 100) }}% Read</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">Average Rating</span>
+          <div class="stat-val-group">
+            <span class="stat-value">{{ stats.avg_rating }}</span>
+            <span class="stat-badge badge-gold">★ Stars</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">Marked for Review</span>
+          <div class="stat-val-group">
+            <span class="stat-value">{{ stats.yearly_reviews }}</span>
+            <span class="stat-badge badge-indigo">Yearly Review</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Charts Row -->
+      <div class="charts-row">
+        <!-- Activity by Year (Clickable) -->
+        <div class="chart-panel">
+          <div class="chart-header">
+            <h3 class="chart-title">Books Finished by Year</h3>
+            <span class="chart-meta">Click a year to filter shelf</span>
+          </div>
+          <div class="year-bars">
+            {% set max_year_count = stats.yearly | map(attribute='count') | max %}
+            {% for item in stats.yearly %}
+            <div class="year-bar-item" data-filter-year="{{ item.year }}" title="Filter by year {{ item.year }}">
+              <div class="year-bar-fill-wrap">
+                <span class="year-bar-count">{{ item.count }}</span>
+                <div class="year-bar-fill" style="height: {{ (item.count / max_year_count * 100)|round }}%;"></div>
+              </div>
+              <span class="year-bar-label">{{ item.year }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Rating Distribution (Clickable) -->
+        <div class="chart-panel">
+          <div class="chart-header">
+            <h3 class="chart-title">Rating Distribution</h3>
+            <span class="chart-meta">Click a star row to filter</span>
+          </div>
+          <div class="rating-breakdown-list">
+            {% for star in [5, 4, 3, 2, 1] %}
+            {% set count = stats.ratings[star] %}
+            {% set pct = (count / stats.total * 100)|round if stats.total else 0 %}
+            <div class="rating-row" data-filter-rating="{{ star }}" title="Filter by {{ star }} star rating">
+              <span class="rating-label">{{ star }} ★</span>
+              <div class="rating-bar-track">
+                <div class="rating-bar-fill" style="width: {{ pct }}%;"></div>
+              </div>
+              <span class="rating-count">{{ count }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Filter Chips -->
+      <div class="filters-bar">
+        <button class="filter-chip active" data-filter="all">All ({{ stats.total }})</button>
+        <button class="filter-chip" data-filter="finished">Finished ({{ stats.finished }})</button>
+        <button class="filter-chip" data-filter="yearly">Yearly Review ({{ stats.yearly_reviews }})</button>
+        <button class="filter-chip" data-filter="five_star">5 Stars ({{ stats.ratings[5] }})</button>
+        <button class="filter-chip" data-filter="unread">Unread / Planned ({{ stats.unread }})</button>
+      </div>
+    </section>
+
+    <!-- Horizontal Covers Shelf Section -->
+    <section class="shelf-section">
+      <div class="shelf-header-wrap">
+        <div>
+          <h2 class="section-title">📚 Book Collection</h2>
+          <p class="section-sub">Click any book cover to inspect details</p>
+        </div>
+
+        <!-- Active Filter Status Indicator (to the right of header, prevents layout shift) -->
+        <div class="active-filter-banner" id="activeFilterBanner" style="display: none;">
+          <div class="filter-status-text">
+            <span class="filter-dot"></span>
+            <span id="filterDescription">Filtered by <strong>All Books</strong></span>
+            <span class="filter-count-pill" id="filterCountBadge">{{ stats.total }} of {{ stats.total }} books</span>
+          </div>
+          <button class="clear-filter-btn" id="clearFilterBtn" title="Reset all filters">
+            ✕ Reset
+          </button>
+        </div>
+      </div>
+
+      <div class="scroll-row-container">
+        <button class="arrow-btn arrow-left" id="scrollLeft" aria-label="Scroll Left">‹</button>
+
+        <div class="covers-row" id="coversRow">
+          {% for b in books %}
+          <div class="book-card" data-id="{{ b.id }}" data-title="{{ b.title | lower }}"
+            data-author="{{ (b.author or '') | lower }}" data-finished="{{ b.finished }}"
+            data-yearly="{{ b.yearly_review }}" data-rating="{{ b.rating or 0 }}"
+            data-year="{{ (b.date_finished or '')[:4] }}">
+
+            <div class="cover-wrapper">
+              {% if b.cover_url %}
+              <img class="cover-img" src="{{ b.cover_url }}" alt="{{ b.title }} Cover" loading="lazy" />
+              {% else %}
+              <div class="cover-placeholder">
+                <div class="placeholder-badge">📖 No Cover</div>
+                <div class="placeholder-center">
+                  <span class="placeholder-icon">📚</span>
+                  <div class="placeholder-title">{{ b.title }}</div>
+                </div>
+                <div class="placeholder-author">{{ b.author or 'Unknown' }}</div>
+              </div>
+              {% endif %}
+
+              {% if b.rating %}
+              <div class="rating-pill">
+                ★ {{ "%.1f"|format(b.rating) if b.rating % 1 != 0 else b.rating|int }}
+              </div>
+              {% endif %}
+
+              {% if b.yearly_review %}
+              <div class="yearly-flag" title="Yearly Review Selection">★ Review</div>
+              {% endif %}
+            </div>
+
+            <div class="card-info">
+              <div class="book-title" title="{{ b.title }}">{{ b.title }}</div>
+              <div class="book-author" title="{{ b.author or '' }}">{{ b.author or 'Unknown Author' }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <button class="arrow-btn arrow-right" id="scrollRight" aria-label="Scroll Right">›</button>
+      </div>
+
+      <div class="empty-shelf" id="emptyShelf">
+        <p>No books match your search or filter.</p>
+      </div>
+    </section>
+
+    <!-- Filtered Data JSON Export Section (Ready for LLM Prompts) -->
+    <section class="content-container json-export-section">
+      <div class="json-panel">
+        <div class="json-header">
+          <div class="json-header-left">
+            <div class="json-title-row">
+              <span class="json-icon">{ }</span>
+              <h3 class="json-title">Filtered Data (JSON Export)</h3>
+              <span class="json-badge" id="jsonCountBadge">{{ stats.total }} Books</span>
+              <span class="json-size-badge" id="jsonSizeBadge">0 KB</span>
+            </div>
+            <p class="json-subtitle">JSON payload for the filtered books above — copy and paste for analysis.</p>
+          </div>
+          <div class="json-header-right">
+            <div class="json-mode-toggle">
+              <button class="toggle-btn active" id="jsonBeautifiedBtn"
+                title="Formatted with indentation">Formatted</button>
+              <button class="toggle-btn" id="jsonCompactBtn"
+                title="Compact single-line JSON to minimize token usage">Compact (Save Tokens)</button>
+            </div>
+            <button class="copy-json-btn" id="copyJsonBtn" title="Copy filtered JSON to clipboard">
+              <span class="copy-icon">📋</span>
+              <span class="copy-text" id="copyBtnText">Copy JSON</span>
+            </button>
+          </div>
+        </div>
+        <div class="json-body">
+          <pre class="json-pre"><code id="jsonCodeBlock"></code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal / Detail Overlay -->
+  <div class="modal-overlay" id="bookModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close dialog">✕</button>
+
+      <div class="modal-cover-side">
+        <img class="modal-cover-img" id="modalImg" src="" alt="Cover" style="display: none;" />
+        <div class="cover-placeholder modal-cover-placeholder" id="modalPlaceholder" style="display: none;">
+          <div class="placeholder-badge">📖 No Cover Image</div>
+          <div class="placeholder-center">
+            <span class="placeholder-icon">📚</span>
+            <div class="placeholder-title" id="modalPlaceholderTitle"></div>
+          </div>
+          <div class="placeholder-author" id="modalPlaceholderAuthor"></div>
+        </div>
+      </div>
+
+      <div class="modal-info-side">
+        <div class="modal-heading">
+          <h2 class="modal-title" id="modalTitle"></h2>
+          <div class="modal-author" id="modalAuthor"></div>
+        </div>
+
+        <div class="modal-badges" id="modalBadges"></div>
+
+        <div class="modal-notes-box" id="modalNotesBox">
+          <span class="modal-notes-label">Personal Notes & Reflections</span>
+          <div class="modal-notes-text" id="modalNotes"></div>
+        </div>
+
+        <div class="modal-actions">
+          <a class="modal-btn btn-primary" id="modalApiBtn" href="#" target="_blank">
+            View JSON API ↗
+          </a>
+          <a class="modal-btn btn-secondary" id="modalFullCoverBtn" href="#" target="_blank" style="display: none;">
+            Full Image ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <span>2026 - David Schraedel</span>
+  </footer>
+
+  <!-- Safe Server Data Injection for Modal & Client Filter -->
+  <script>
+    const allBooks = {{ books | tojson }};
+    const totalCount = allBooks.length;
+    const coversRow = document.getElementById('coversRow');
+    const scrollLeftBtn = document.getElementById('scrollLeft');
+    const scrollRightBtn = document.getElementById('scrollRight');
+    const searchInput = document.getElementById('searchInput');
+    const emptyShelf = document.getElementById('emptyShelf');
+    const cards = Array.from(document.querySelectorAll('.book-card'));
+    const filterChips = Array.from(document.querySelectorAll('.filter-chip'));
+    const yearBarItems = Array.from(document.querySelectorAll('.year-bar-item'));
+    const ratingRows = Array.from(document.querySelectorAll('.rating-row'));
+
+    // Filter banner elements
+    const activeFilterBanner = document.getElementById('activeFilterBanner');
+    const filterDescription = document.getElementById('filterDescription');
+    const filterCountBadge = document.getElementById('filterCountBadge');
+    const clearFilterBtn = document.getElementById('clearFilterBtn');
+
+    // JSON export elements
+    const jsonCodeBlock = document.getElementById('jsonCodeBlock');
+    const jsonCountBadge = document.getElementById('jsonCountBadge');
+    const jsonSizeBadge = document.getElementById('jsonSizeBadge');
+    const copyJsonBtn = document.getElementById('copyJsonBtn');
+    const copyBtnText = document.getElementById('copyBtnText');
+    const jsonBeautifiedBtn = document.getElementById('jsonBeautifiedBtn');
+    const jsonCompactBtn = document.getElementById('jsonCompactBtn');
+
+    let isJsonCompact = false;
+    let currentFilteredBooks = allBooks;
+
+    // Modal elements
+    const modal = document.getElementById('bookModal');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalImg = document.getElementById('modalImg');
+    const modalPlaceholder = document.getElementById('modalPlaceholder');
+    const modalPlaceholderTitle = document.getElementById('modalPlaceholderTitle');
+    const modalPlaceholderAuthor = document.getElementById('modalPlaceholderAuthor');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalAuthor = document.getElementById('modalAuthor');
+    const modalBadges = document.getElementById('modalBadges');
+    const modalNotesBox = document.getElementById('modalNotesBox');
+    const modalNotes = document.getElementById('modalNotes');
+    const modalApiBtn = document.getElementById('modalApiBtn');
+    const modalFullCoverBtn = document.getElementById('modalFullCoverBtn');
+
+    // Horizontal Scroll Buttons
+    scrollLeftBtn.addEventListener('click', () => {
+      coversRow.scrollBy({ left: -600, behavior: 'smooth' });
+    });
+    scrollRightBtn.addEventListener('click', () => {
+      coversRow.scrollBy({ left: 600, behavior: 'smooth' });
+    });
+
+    // Active Filter State
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    function updateJsonExport() {
+      // Export clean book payload containing notes, metadata, and rating
+      const exportData = currentFilteredBooks.map(b => {
+        const item = {
+          id: b.id,
+          title: b.title,
+          author: b.author,
+          rating: b.rating,
+          finished: b.finished,
+          date_finished: b.date_finished,
+          yearly_review: b.yearly_review,
+          notes: b.notes
+        };
+        if (b.cover_url) item.cover_url = b.cover_url;
+        return item;
+      });
+
+      const jsonStr = isJsonCompact
+        ? JSON.stringify(exportData)
+        : JSON.stringify(exportData, null, 2);
+
+      jsonCodeBlock.textContent = jsonStr;
+      jsonCountBadge.textContent = `${exportData.length} Book${exportData.length === 1 ? '' : 's'}`;
+
+      const byteLen = new Blob([jsonStr]).size;
+      const sizeText = byteLen > 1024 ? `${(byteLen / 1024).toFixed(1)} KB` : `${byteLen} B`;
+      jsonSizeBadge.textContent = sizeText;
+    }
+
+    function applyFilters() {
+      let filtered = [];
+
+      cards.forEach(card => {
+        const id = parseInt(card.getAttribute('data-id'));
+        const book = allBooks.find(b => b.id === id);
+        if (!book) return;
+
+        const title = card.getAttribute('data-title');
+        const author = card.getAttribute('data-author');
+        const finished = card.getAttribute('data-finished') === '1';
+        const yearly = card.getAttribute('data-yearly') === '1';
+        const rating = parseFloat(card.getAttribute('data-rating') || 0);
+        const year = card.getAttribute('data-year');
+
+        // Text search
+        const matchesSearch = !searchQuery || title.includes(searchQuery) || author.includes(searchQuery);
+
+        // Category filter
+        let matchesCategory = true;
+        if (activeFilter === 'finished') matchesCategory = finished;
+        else if (activeFilter === 'unread') matchesCategory = !finished;
+        else if (activeFilter === 'yearly') matchesCategory = yearly;
+        else if (activeFilter === 'five_star') matchesCategory = rating >= 4.9;
+        else if (activeFilter.startsWith('year_')) {
+          matchesCategory = year === activeFilter.replace('year_', '');
+        } else if (activeFilter.startsWith('star_')) {
+          matchesCategory = Math.round(rating) === parseInt(activeFilter.replace('star_', ''));
+        }
+
+        if (matchesSearch && matchesCategory) {
+          card.style.display = 'flex';
+          filtered.push(book);
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      currentFilteredBooks = filtered;
+      const count = filtered.length;
+
+      emptyShelf.style.display = count === 0 ? 'block' : 'none';
+      coversRow.style.display = count === 0 ? 'none' : 'flex';
+
+      // Update Active Filter Banner
+      const isFiltered = activeFilter !== 'all' || searchQuery !== '';
+      if (isFiltered) {
+        activeFilterBanner.style.display = 'flex';
+        let desc = '';
+        if (searchQuery) desc += `Search: "${searchQuery}"`;
+        if (activeFilter !== 'all') {
+          let catName = activeFilter;
+          if (activeFilter === 'finished') catName = 'Finished';
+          else if (activeFilter === 'unread') catName = 'Unread / Planned';
+          else if (activeFilter === 'yearly') catName = 'Yearly Review';
+          else if (activeFilter === 'five_star') catName = '5 Stars';
+          else if (activeFilter.startsWith('year_')) catName = `Year ${activeFilter.replace('year_', '')}`;
+          else if (activeFilter.startsWith('star_')) catName = `${activeFilter.replace('star_', '')} Stars`;
+          desc = desc ? `${desc} + Category: ${catName}` : `Category: ${catName}`;
+        }
+        filterDescription.innerHTML = `Active Filter: <strong>${desc}</strong>`;
+        filterCountBadge.textContent = `${count} of ${totalCount} books`;
+      } else {
+        activeFilterBanner.style.display = 'none';
+      }
+
+      // Update Chart Active Visuals
+      yearBarItems.forEach(item => {
+        const yr = item.getAttribute('data-filter-year');
+        if (activeFilter === `year_${yr}`) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
+      ratingRows.forEach(row => {
+        const st = row.getAttribute('data-filter-rating');
+        if (activeFilter === `star_${st}`) {
+          row.classList.add('active');
+        } else {
+          row.classList.remove('active');
+        }
+      });
+
+      updateJsonExport();
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.trim().toLowerCase();
+      applyFilters();
+    });
+
+    // Filter Chips Click
+    filterChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        filterChips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeFilter = chip.getAttribute('data-filter');
+        applyFilters();
+      });
+    });
+
+    // Year Bars Click to Filter
+    yearBarItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const year = item.getAttribute('data-filter-year');
+        filterChips.forEach(c => c.classList.remove('active'));
+        activeFilter = activeFilter === `year_${year}` ? 'all' : `year_${year}`;
+        if (activeFilter === 'all') {
+          document.querySelector('.filter-chip[data-filter="all"]').classList.add('active');
+        }
+        applyFilters();
+      });
+    });
+
+    // Star Row Click to Filter
+    ratingRows.forEach(row => {
+      row.addEventListener('click', () => {
+        const star = row.getAttribute('data-filter-rating');
+        filterChips.forEach(c => c.classList.remove('active'));
+        activeFilter = activeFilter === `star_${star}` ? 'all' : `star_${star}`;
+        if (activeFilter === 'all') {
+          document.querySelector('.filter-chip[data-filter="all"]').classList.add('active');
+        }
+        applyFilters();
+      });
+    });
+
+    // Clear Filter Button Click
+    clearFilterBtn.addEventListener('click', () => {
+      activeFilter = 'all';
+      searchQuery = '';
+      searchInput.value = '';
+      filterChips.forEach(c => c.classList.remove('active'));
+      document.querySelector('.filter-chip[data-filter="all"]').classList.add('active');
+      applyFilters();
+    });
+
+    // JSON Format Toggles
+    jsonBeautifiedBtn.addEventListener('click', () => {
+      isJsonCompact = false;
+      jsonBeautifiedBtn.classList.add('active');
+      jsonCompactBtn.classList.remove('active');
+      updateJsonExport();
+    });
+
+    jsonCompactBtn.addEventListener('click', () => {
+      isJsonCompact = true;
+      jsonCompactBtn.classList.add('active');
+      jsonBeautifiedBtn.classList.remove('active');
+      updateJsonExport();
+    });
+
+    // Copy JSON to Clipboard
+    copyJsonBtn.addEventListener('click', () => {
+      const textToCopy = jsonCodeBlock.textContent;
+      if (!textToCopy) return;
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        copyJsonBtn.classList.add('copied');
+        copyBtnText.textContent = '✓ Copied!';
+        setTimeout(() => {
+          copyJsonBtn.classList.remove('copied');
+          copyBtnText.textContent = 'Copy JSON';
+        }, 2200);
+      }).catch(() => {
+        // Fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        copyJsonBtn.classList.add('copied');
+        copyBtnText.textContent = '✓ Copied!';
+        setTimeout(() => {
+          copyJsonBtn.classList.remove('copied');
+          copyBtnText.textContent = 'Copy JSON';
+        }, 2200);
+      });
+    });
+
+    // Modal Interaction
+    function openModal(book) {
+      modalTitle.textContent = book.title;
+      modalAuthor.textContent = book.author ? `by ${book.author}` : 'Unknown Author';
+
+      // Badges
+      modalBadges.innerHTML = '';
+
+      if (book.rating) {
+        const rBadge = document.createElement('span');
+        rBadge.className = 'badge-chip badge-gold';
+        rBadge.textContent = `★ ${book.rating.toFixed(1)} Rating`;
+        modalBadges.appendChild(rBadge);
+      }
+
+      const statusBadge = document.createElement('span');
+      if (book.finished) {
+        statusBadge.className = 'badge-chip badge-emerald';
+        statusBadge.textContent = book.date_finished ? `✓ ${book.date_finished}` : '✓ Finished';
+      } else {
+        statusBadge.className = 'badge-chip badge-indigo';
+        statusBadge.textContent = '○ In Progress / Planned';
+      }
+      modalBadges.appendChild(statusBadge);
+
+      if (book.yearly_review) {
+        const yBadge = document.createElement('span');
+        yBadge.className = 'badge-chip badge-indigo';
+        yBadge.textContent = '★ Yearly Review';
+        modalBadges.appendChild(yBadge);
+      }
+
+      // Notes
+      if (book.notes && book.notes.trim()) {
+        modalNotes.textContent = book.notes;
+        modalNotesBox.style.display = 'flex';
+      } else {
+        modalNotes.textContent = 'No personal notes recorded yet for this title.';
+        modalNotesBox.style.display = 'flex';
+      }
+
+      // Cover display
+      if (book.cover_url) {
+        modalImg.src = book.cover_url;
+        modalImg.style.display = 'block';
+        modalPlaceholder.style.display = 'none';
+        modalFullCoverBtn.href = book.cover_url;
+        modalFullCoverBtn.style.display = 'inline-flex';
+      } else {
+        modalImg.style.display = 'none';
+        modalPlaceholder.style.display = 'flex';
+        modalPlaceholderTitle.textContent = book.title;
+        modalPlaceholderAuthor.textContent = book.author || 'Unknown';
+        modalFullCoverBtn.style.display = 'none';
+      }
+
+      modalApiBtn.href = `/api/books/${book.id}`;
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+
+    // Attach click to all book cards
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const id = parseInt(card.getAttribute('data-id'));
+        const book = allBooks.find(b => b.id === id);
+        if (book) openModal(book);
+      });
+    });
+
+    // Initial render of JSON payload
+    applyFilters();
+  </script>
+</body>
+
+</html>
