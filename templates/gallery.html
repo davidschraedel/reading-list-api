@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Covers Gallery — Reading List</title>
+  <meta name="description" content="Visual horizontal showcase and gallery of all reading list book covers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card-bg: rgba(23, 27, 38, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --star-color: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(14, 165, 233, 0.05) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    header {
+      padding: 2.5rem 3rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      background: rgba(9, 10, 15, 0.7);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      -webkit-text-fill-color: #a5b4fc;
+    }
+
+    .brand-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 0.6rem 1.2rem 0.6rem 2.4rem;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      font-family: inherit;
+      outline: none;
+      width: 240px;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      width: 280px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.85rem;
+      color: var(--text-muted);
+      pointer-events: none;
+      font-size: 0.85rem;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
+      padding: 0.55rem 0.85rem;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 0;
+      position: relative;
+    }
+
+    .row-scroll-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .covers-row {
+      display: flex;
+      gap: 1.75rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 2rem 3rem 3rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(99, 102, 241, 0.4) transparent;
+      scroll-snap-type: x proximity;
+    }
+
+    .covers-row::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .covers-row::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .covers-row::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+    }
+
+    .covers-row::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.6);
+    }
+
+    .book-card {
+      flex: 0 0 200px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .book-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(99, 102, 241, 0.5);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7), 0 0 25px var(--accent-glow);
+    }
+
+    .cover-wrapper {
+      position: relative;
+      width: 100%;
+      height: 290px;
+      overflow: hidden;
+      background: #111420;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cover-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .book-card:hover .cover-wrapper img {
+      transform: scale(1.04);
+    }
+
+    .rating-pill {
+      position: absolute;
+      top: 0.65rem;
+      right: 0.65rem;
+      background: rgba(9, 10, 15, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--star-color);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    }
+
+    .card-info {
+      padding: 0.9rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .book-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .book-author {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(17, 20, 32, 0.9);
+      border: 1px solid var(--card-border);
+      color: white;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 30;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+      transition: all 0.2s ease;
+    }
+
+    .arrow-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .arrow-left {
+      left: 1rem;
+    }
+
+    .arrow-right {
+      right: 1rem;
+    }
+
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 1.5rem 1.25rem 1rem;
+      }
+      .covers-row {
+        padding: 1.5rem 1.25rem;
+        gap: 1.2rem;
+      }
+      .book-card {
+        flex: 0 0 160px;
+      }
+      .cover-wrapper {
+        height: 230px;
+      }
+      .arrow-btn {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand-group">
+      <h1 class="brand-title">
+        Reading List Covers
+        <span class="badge" id="countBadge">{{ books|length }} Books</span>
+      </h1>
+      <p class="brand-subtitle">Horizontal scroll gallery of all library book covers</p>
+    </div>
+
+    <div class="controls-group">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Filter covers by title or author..." autocomplete="off">
+      </div>
+      <a href="/api/covers" class="nav-btn" target="_blank" title="View raw JSON format">
+        JSON API ↗
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="row-scroll-container">
+      <button class="arrow-btn arrow-left" id="scrollLeft" aria-label="Scroll Left">‹</button>
+      
+      <div class="covers-row" id="coversRow">
+        {% for b in books %}
+        <a class="book-card" 
+           href="{{ b.cover_url }}" 
+           target="_blank" 
+           title="Click to view full cover image"
+           data-title="{{ b.title | lower }}" 
+           data-author="{{ (b.author or '') | lower }}">
+          <div class="cover-wrapper">
+            <img src="{{ b.cover_url }}" alt="{{ b.title }} Cover" loading="lazy" />
+            {% if b.rating %}
+            <div class="rating-pill">
+              ★ {{ "%.1f"|format(b.rating) if b.rating % 1 != 0 else b.rating|int }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="card-info">
+            <div class="book-title">{{ b.title }}</div>
+            <div class="book-author">{{ b.author or 'Unknown Author' }}</div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+      <button class="arrow-btn arrow-right" id="scrollRight" aria-label="Scroll Right">›</button>
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      <p>No book covers match your filter.</p>
+    </div>
+  </main>
+
+  <footer>
+    <span>Book List Flask API</span>
+    <span>Use mouse wheel, drag, or arrow buttons to scroll</span>
+  </footer>
+
+  <script>
+    const coversRow = document.getElementById('coversRow');
+    const scrollLeftBtn = document.getElementById('scrollLeft');
+    const scrollRightBtn = document.getElementById('scrollRight');
+    const searchInput = document.getElementById('searchInput');
+    const countBadge = document.getElementById('countBadge');
+    const emptyState = document.getElementById('emptyState');
+    const cards = Array.from(document.querySelectorAll('.book-card'));
+
+    // Smooth scroll buttons
+    scrollLeftBtn.addEventListener('click', () => {
+      coversRow.scrollBy({ left: -600, behavior: 'smooth' });
+    });
+    scrollRightBtn.addEventListener('click', () => {
+      coversRow.scrollBy({ left: 600, behavior: 'smooth' });
+    });
+
+    // Horizontal scroll with mouse wheel
+    coversRow.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        coversRow.scrollLeft += e.deltaY * 1.5;
+      }
+    }, { passive: false });
+
+    // Live search filter
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title');
+        const author = card.getAttribute('data-author');
+        const match = !q || title.includes(q) || author.includes(q);
+
+        if (match) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      countBadge.textContent = `${visibleCount} Book${visibleCount === 1 ? '' : 's'}`;
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      coversRow.style.display = visibleCount === 0 ? 'none' : 'flex';
+    });
+  </script>
+</body>
+</html>
